@@ -13,9 +13,31 @@ int main(int argc, const char * argv[])
 
     @autoreleasepool {
         
-        // insert code here...
-        NSLog(@"Hello, World!");
+        NSArray *oldStrings = [NSArray arrayWithObjects:@"Sauekraut", @"Raygun",
+                               @"Big Nerd Ranch", @"Missisippi", nil];
         
+        NSLog(@"old string: %@", oldStrings);
+        
+        NSMutableArray *newStrings = [NSMutableArray array];
+        
+        NSArray *vowels = [NSArray arrayWithObjects:@"a", @"e", @"i", @"o", @"u", nil];
+        
+        void (^devowelizer)(id, NSUInteger, BOOL *);
+        
+        devowelizer = ^(id string, NSUInteger i, BOOL *stop){
+            
+            NSMutableString *newString = [NSMutableString stringWithString:string];
+            
+            for (NSString *s in vowels) {
+                NSRange fullRange = NSMakeRange(0, [newString length]);
+                [newString replaceOccurrencesOfString:s withString:@"" options:NSCaseInsensitiveSearch range:fullRange];
+                
+            }
+            [newStrings addObject:newString];
+        };
+        
+        [oldStrings enumerateObjectsUsingBlock:devowelizer];
+        NSLog(@"new strings: %@", newStrings);
     }
     return 0;
 }
